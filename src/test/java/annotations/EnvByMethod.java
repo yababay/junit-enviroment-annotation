@@ -22,4 +22,12 @@ public class EnvByMethod {
         Assertions.assertTrue(!Configuration.proxyEnabled);
         Assertions.assertNull(Configuration.remote);
     }
+
+    @Test
+    @Env(browser = Env.Browser.FIREFOX)
+    void checkBrowser(){
+        Assertions.assertTrue(!Configuration.proxyEnabled);
+        Assertions.assertNull(Configuration.remote);
+        Assertions.assertEquals("firefox", Configuration.browser);
+    }
 }

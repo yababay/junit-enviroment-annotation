@@ -23,8 +23,8 @@ public class EnvAnnotationProcessor implements BeforeAllCallback, BeforeEachCall
     public void beforeEach(ExtensionContext context) throws Exception {
         Env env = fromClassOrFromMethod(context);
         if(env == null) return;
-        // Capabilities options = env.browser() == Env.Browser.FIREFOX ? new FirefoxOptions() : new ChromeOptions();
         String remote = env.remote();
+        Configuration.browser = env.browser() == Env.Browser.FIREFOX ? "firefox" : "chrome";
         Configuration.proxyEnabled = env.withProxy();
         Configuration.remote = remote.isEmpty() ? null : remote;
     }
