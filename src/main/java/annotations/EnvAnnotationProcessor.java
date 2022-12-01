@@ -1,19 +1,10 @@
 package annotations;
 
-import com.codeborne.selenide.WebDriverRunner;
-import org.junit.jupiter.api.extension.AfterAllCallback;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.junit.jupiter.api.extension.*;
 
-import java.net.URL;
 import com.codeborne.selenide.Configuration;
 
-public class EnvAnnotationProcessor implements BeforeAllCallback, BeforeEachCallback, AfterAllCallback {
+public class EnvAnnotationProcessor implements BeforeAllCallback, BeforeEachCallback, AfterAllCallback, AfterEachCallback {
 
     public static final ExtensionContext.Namespace envSpace = ExtensionContext.Namespace.create(EnvAnnotationProcessor.class);
 
@@ -31,20 +22,21 @@ public class EnvAnnotationProcessor implements BeforeAllCallback, BeforeEachCall
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
         Env env = fromClassOrFromMethod(context);
-        Capabilities capabilities = env.browser() == Env.Browser.FIREFOX ? new FirefoxOptions() : new ChromeOptions();
-        if(env.withProxy()){
-            Configuration.proxyEnabled = true;
-        }
+        if(env == null) return;
+        // Capabilities options = env.browser() == Env.Browser.FIREFOX ? new FirefoxOptions() : new ChromeOptions();
         String remote = env.remote();
-        if(!remote.isEmpty()){
-            Configuration.remote = remote;
-        }
-        //WebDriverRunner.setWebDriver(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), capabilities));
+        Configuration.proxyEnabled = env.withProxy();
+        Configuration.remote = remote.isEmpty() ? null : remote;
     }
 
     private Env fromClassOrFromMethod(ExtensionContext context){
         Env methodEnv = context.getRequiredTestMethod().getAnnotation(Env.class);
-        Env classEnv = context.getStore(envSpace).get("env", Env.class);
-        return methodEnv == null ? classEnv : methodEnv;
+        if(methodEnv != null) return methodEnv;
+        return context.getStore(envSpace).get("env", Env.class);
+    }
+
+    @Override
+    public void afterEach(ExtensionContext context) throws Exception {
+        //context.getRequiredTestMethod().getAnnotation(Env.class).
     }
 }
