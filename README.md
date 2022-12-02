@@ -9,16 +9,19 @@
 * тип браузера
 
 ```java
+@Env(withProxy = true)
+...
 @Env(withProxy = true, remote = "http://localhost:4444/wd/hub")
-...
-@Env(withProxy = false)
-...
-@Env(browser = Env.Browser.FIREFOX)
-...
+// классс или метод
+@Env(browser = Env.Browser.FIREFOX, withProxy = true)
+//  классс или метод
+@Env()
+// или даже просто 
 @Env // сброс всех параметров к значениям по умолчанию: 
      // т.е. browser = Env.Browser.CHROME, и, соответственно, Configuration.browser = "chrome"
      // remote = "" и, соответственно, Configuration.remote = null 
      // withProxy = false и, соответственно, Configuration.proxyEnabled = false
+//  классс или метод
 ```
 
 ## Методы и классы
