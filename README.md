@@ -15,7 +15,10 @@
 ...
 @Env(browser = Env.Browser.FIREFOX)
 ...
-@Env // сброс всех параметров к значению по умолчанию
+@Env // сброс всех параметров к значениям по умолчанию: 
+     // т.е. browser = Env.Browser.CHROME, и, соответственно, Configuration.browser = "chrome"
+     // remote = "" и, соответственно, Configuration.remote = null 
+     // withProxy = false и, соответственно, Configuration.proxyEnabled = false
 ```
 
 ## Методы и классы
