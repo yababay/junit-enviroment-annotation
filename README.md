@@ -10,11 +10,14 @@
 
 ```java
 @Env(withProxy = true)
-...
+// классс или метод
+
 @Env(withProxy = true, remote = "http://localhost:4444/wd/hub")
 // классс или метод
+
 @Env(browser = Env.Browser.FIREFOX, withProxy = true)
 //  классс или метод
+
 @Env()
 // или даже просто 
 @Env // сброс всех параметров к значениям по умолчанию: 
